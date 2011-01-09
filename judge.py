@@ -49,7 +49,7 @@ class CBuilder(Builder):
 
     def build(self, src, dest='foo.out'):
         src_path = os.path.abspath('%s.c' % src)
-        err = subprocess.Popen(['gcc', src_path, '-o', dest], stdout=PIPE, stderr=PIPE).communicate()[1] or ''
+        err = subprocess.Popen(['gcc', '-lm', src_path, '-o', dest], stdout=PIPE, stderr=PIPE).communicate()[1] or ''
         if len(err) > 0:
             raise CompileError, err
         return dest
@@ -61,6 +61,8 @@ class CBuilder(Builder):
             raise RuntimeError, err
 
         expected = open(expected_path).read()
+        print output
+        print expected
         if output != expected:
             raise WrongAnswer
 
